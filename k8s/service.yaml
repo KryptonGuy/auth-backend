@@ -1,18 +1,19 @@
 apiVersion: v1
 kind: Service
 metadata:
-  labels:
-    app.kubernetes.io/name: login-system
-    app.kubernetes.io/instance: login-system-instance
-    app.kubernetes.io/version: "1.0.0"
-    app.kubernetes.io/component: backend
-    app.kubernetes.io/managed-by: kubectl
-  name: login-system
+  name: lb-login-service
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:ap-south-1:734702322667:certificate/51da0191-54c7-48ae-87f3-5c9bf1927054
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https"
 spec:
   selector:
     app: login-system
   type: LoadBalancer
   ports:
-   -  protocol: TCP
-      port: 80
-      targetPort: 8080
+   - name: http
+    port: 80
+    targetPort: 8080
+   - name: https
+    port: 443
+    targetPort: 8080
