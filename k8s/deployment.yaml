@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: login-system
+    app.kubernetes.io/instance: login-system-instance
+    app.kubernetes.io/version: '1.0.0'
+    app.kubernetes.io/managed-by: kubectl
+  name: login-system-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: login-system
+  template:
+    metadata:
+      labels:
+        app: login-system
+    spec:
+      containers:
+        - image: 734702322667.dkr.ecr.ap-south-1.amazonaws.com/login-system:latest
+          imagePullPolicy: Always
+          name: login-system
+          ports:
+            - containerPort: 8080
