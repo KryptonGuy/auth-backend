@@ -8,9 +8,8 @@ data "aws_eks_cluster_auth" "cluster" {
   name = module.eks.cluster_id
 }
 
-data "aws_caller_identity" "current" {} # used for accessing Account ID and ARN
+data "aws_caller_identity" "current" {} 
 
-# render Admin & Developer users list with the structure required by EKS module
 locals {
   cluster_name = "${var.name_prefix}-${var.environment}"
 
@@ -23,14 +22,23 @@ locals {
     }
   ]
 
+  developer_user_map_users = [
+    for developer_user in var.developer_users :
+    {
+      userarn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/${developer_user}"
+      username = developer_user
+      groups   = ["${var.name_prefix}-developers"]
+    }
+  ]
 }
+
 resource "aws_eip" "nat_gw_elastic_ip" {
   vpc = true
 
   tags = {
     Name        = "${local.cluster_name}-nat-eip"
     Terraform   = "true"
-    Environment = "test"
+    Environment = "dev"
   }
 }
 
@@ -85,8 +93,8 @@ module "eks" {
     ingress_nodes_8443_tcp = {
       description                = "Node groups to cluster API via port 8443"
       protocol                   = "tcp"
-      from_port                  = 8443
-      to_port                    = 8443
+      from_port                  = 8080
+      to_port                    = 8080
       type                       = "ingress"
       source_node_security_group = true
     }
@@ -125,7 +133,7 @@ module "eks_auth" {
   source = "aidanmelen/eks-auth/aws"
   eks    = module.eks
 
-  map_users = local.admin_user_map_users
+  map_users = concat(local.admin_user_map_users, local.developer_user_map_users)
   map_roles = [
     {
       rolearn  = "arn:aws:iam::734702322667:role/LoginSystemCodeBuild"

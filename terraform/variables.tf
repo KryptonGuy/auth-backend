@@ -51,4 +51,3 @@ variable "asg_dev_instance_types" {
   default     = ["t3a.medium"]
   description = "List of EC2 instance machine types to be used in EKS for development workload."
 }
-

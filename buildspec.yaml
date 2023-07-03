@@ -42,7 +42,7 @@ phases:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      #- docker push REPOSITORY_URI
+      - docker push $REPOSITORY_URI
       - echo Push the latest image to cluster
       - kubectl apply -f k8s/deployment.yaml
       - kubectl apply -f k8s/service.yaml
