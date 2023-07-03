@@ -19,7 +19,7 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon EKS...
-      - aws eks --region ap-south-1 update-kubeconfig --name login-systems
+      - aws eks --region ap-south-1 update-kubeconfig --name login-system-dev
       - echo check config 
       - kubectl config view --minify
       - echo check kubectl access

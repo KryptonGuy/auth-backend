@@ -46,4 +46,6 @@ resource "aws_codepipeline" "pipeline" {
     }
   }
 
+  depends_on = [module.eks]
+
 }
