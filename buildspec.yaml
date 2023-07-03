@@ -1,0 +1,48 @@
+version: 0.2
+run-as: root
+
+phases:
+
+  install:
+    commands:
+      - echo Installing app dependencies...
+      - curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.26.4/2023-05-11/bin/linux/amd64/kubectl
+      - chmod +x ./kubectl
+      - mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+      - echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+      - source ~/.bashrc
+      - echo 'Check kubectl version'
+      - kubectl version --short --client
+      - chmod +x pre.sh
+      - sh pre.sh
+
+  pre_build:
+    commands:
+      - echo Logging in to Amazon EKS...
+      - aws eks --region ap-south-1 update-kubeconfig --name login-systems
+      - echo check config 
+      - kubectl config view --minify
+      - echo check kubectl access
+      - kubectl get svc
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 734702322667.dkr.ecr.ap-south-1.amazonaws.com
+      - REPOSITORY_URI=734702322667.dkr.ecr.ap-south-1.amazonaws.com/login-system:latest
+      - docker pull $REPOSITORY_URI
+      
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...          
+      - docker build --cache-from $REPOSITORY_URI -t login-system:latest .
+      - docker tag login-system:latest $REPOSITORY_URI 
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      #- docker push REPOSITORY_URI
+      - echo Push the latest image to cluster
+      - kubectl apply -f k8s/deployment.yaml
+      - kubectl apply -f k8s/service.yaml
+      - kubectl rollout restart -f k8s/deployment.yaml
