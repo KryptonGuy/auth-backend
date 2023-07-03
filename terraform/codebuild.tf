@@ -3,7 +3,7 @@ resource "aws_codebuild_project" "build" {
   name = "login-system-build"
   description = "Builds the client files for the app environment."
   build_timeout = "5"
-  service_role = "arn:aws:iam::734702322667:role/LoginSystemCodeBuild"
+  service_role = aws_iam_role.codebuild_role.arn
 
   artifacts {
     type = "CODEPIPELINE"

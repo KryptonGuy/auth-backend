@@ -1,6 +1,6 @@
 resource "aws_codepipeline" "pipeline" {
   name     = "login-system-pipeline"
-  role_arn = "arn:aws:iam::734702322667:role/LoginSystemCodeBuild"
+  role_arn = aws_iam_role.codebuild_role.arn
 
   artifact_store {
     location = "mybucket-999111"

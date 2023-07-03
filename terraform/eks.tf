@@ -135,8 +135,8 @@ module "eks_auth" {
   map_users = concat(local.admin_user_map_users, local.developer_user_map_users)
   map_roles = [
     {
-      rolearn  = "arn:aws:iam::734702322667:role/LoginSystemCodeBuild"
-      username = "LoginSystemCodeBuild"
+      rolearn  =  aws_iam_role.codebuild_role.arn
+      username = aws_iam_role.codebuild_role.name
       groups   = ["system:masters"]
     },
   ]
