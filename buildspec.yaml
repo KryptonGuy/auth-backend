@@ -25,6 +25,7 @@ phases:
       - echo check kubectl access
       - kubectl get svc
       - echo Logging in to Amazon ECR...
+      - aws s3 cp s3://elasticbeanstalk-us-east-1-734702322667/.env .
       - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 734702322667.dkr.ecr.ap-south-1.amazonaws.com
       - REPOSITORY_URI=734702322667.dkr.ecr.ap-south-1.amazonaws.com/login-system:latest
       - docker pull $REPOSITORY_URI
