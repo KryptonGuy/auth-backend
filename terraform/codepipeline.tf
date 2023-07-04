@@ -3,7 +3,7 @@ resource "aws_codepipeline" "pipeline" {
   role_arn = aws_iam_role.codebuild_role.arn
 
   artifact_store {
-    location = "mybucket-999111"
+    location = aws_s3_bucket.login_systems_bucket.id
     type     = "S3"
   }
 
@@ -41,7 +41,7 @@ resource "aws_codepipeline" "pipeline" {
       version = "1"
 
       configuration = {
-        ProjectName = "login-system-build"
+        ProjectName = aws_codebuild_project.build.name
       }
     }
   }

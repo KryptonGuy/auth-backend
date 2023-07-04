@@ -17,7 +17,7 @@ variable "environment" {
 
 variable "admin_users" {
   type        = list(string)
-  default     = ["yash","vscode"]
+  default     = []
   description = "List of Kubernetes admins."
 }
 

@@ -18,7 +18,7 @@ spec:
         app: login-system
     spec:
       containers:
-        - image: 734702322667.dkr.ecr.ap-south-1.amazonaws.com/login-system:latest
+        - image: $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$IMAGE_NAME:$IMAGE_TAG
           imagePullPolicy: Always
           name: login-system
           ports:

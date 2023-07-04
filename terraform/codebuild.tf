@@ -20,6 +20,38 @@ resource "aws_codebuild_project" "build" {
     type = "LINUX_CONTAINER"
     privileged_mode = true
 
+    environment_variable {
+      name  = "$ACCOUNT_ID"
+      value = data.aws_caller_identity.current.account_id
+
+    }
+
+    environment_variable {
+      name  = "$IMAGE_TAG"
+      value = "latest"
+    }
+
+    environment_variable {
+      name  = "$IMAGE_NAME"
+      value = aws_ecr_repository.login-systems.name
+    }
+
+    environment_variable {
+      name  = "$REGION"
+      value = var.region
+    }
+
+    environment_variable {
+      name  = "$CLUSTER_NAME"
+      value = module.eks.cluster_id
+    }
+
+    environment_variable {
+      name  = "$S3_BUCKET"
+      value = aws_s3_bucket.login_systems_bucket.id
+    }
+
+
   }
 
   source {
