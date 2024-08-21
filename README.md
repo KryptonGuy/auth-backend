@@ -108,4 +108,4 @@ After completing these steps, your `codepipeline.tf` file should include the Git
    terraform apply
    ``` 
 
-   Confirm the deployment by typing `yes` when prompted. Terraform will create the EKS cluster, associated resources, and the CodePipeline.
+   Confirm the deployment by typing `yes` when prompted. Terraform will create the EKS cluster, associated resources, and the CodePipeline. 
