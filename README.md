@@ -6,7 +6,7 @@ To get started with the Authentication Service, follow the instructions below:
 2. Run `npm install` to install dependencies
 3. Create a `.env` file in the root directory of the folder and add the baseURL for frontend
 4. Add environmental variable as the below table
-5. Run `npm start` in terminal to run the program
+5. Run `npm start` in terminal to run the program 
 
 # Login System
 
