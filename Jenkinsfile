@@ -1,12 +1,6 @@
 pipeline {
     agent any
 
-    stage('Pre-Build') {
-            steps {
-                echo 'Testing.,,.'
-            }
-        }
-
     stages {
         stage('Build') {
             steps {
@@ -14,7 +8,11 @@ pipeline {
                 docker build .
             }
         }
-    }
+        stage('Test') {
+            steps {
+                echo 'Testing.,,.'
+            }
+        }
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
