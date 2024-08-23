@@ -14,6 +14,7 @@ pipeline {
                 docker build .
             }
         }
+    }
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
