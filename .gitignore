@@ -4,6 +4,7 @@ node_modules/
 .terraform
 *.lock.hcl
 # Local Netlify folder
+.ME
 
 .netlify
 .vercel
